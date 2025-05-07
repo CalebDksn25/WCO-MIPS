@@ -252,24 +252,6 @@ def main():
                 # Generate condition check
                 
                 outputText += handleCondition(condition)
-                
-              
-                
-            elif line.startswith("@"): #used to be }
-                # Check if this is the end of a for loop
-                if i > 0 and "++" in lines[i - 1]:
-                    # This is the end of a for loop, add increment and jump back
-                    increment_line = lines[i - 1].strip()
-                    var = increment_line.split("++")[0].strip()
-                    outputText += f"addi {getVariableRegister(var)}, {getVariableRegister(var)}, 1\n"
-                    outputText += f"j {current_loop_start}\n"
-                    outputText += f"{current_loop_end}:\n"
-                else:
-                    # This is the end of an if statement
-                    outputText += f"j {end_label}\n"
-                    outputText += f"{else_label}:\n"
-                outputText += "\n"  # Add newline after each block
-            # int declarations
             elif line.startswith("int "):
                 var_name, value = parseIntDeclaration(line)
                 if var_name:  # Only process if not main function
@@ -282,30 +264,6 @@ def main():
                              pass
                             # outputText += getAssignmentLinesVariable(value, var_name) + "\n"
                         outputText += "\n"  # Add newline after variable declaration
-            # assignments
-            elif "@" in line:
-                print(line)
-                varName, _, val = line.partition("=")
-                varName = varName.strip()
-                val = val.strip().rstrip(';')
-                print(val)
-                # Check for modulus operation
-                if "%" in val:
-                    left, right = val.split("%")
-                    left = left.strip()
-                    right = right.strip()
-                    # print( left, " % ", right)
-                    # outputText += handleModulusOperation(left, right, varName) + "\n"
-                elif val.isdigit():
-                    # immediately value assignments
-                    outputText += getAssignmentLinesImmediateValue(val, varName) + "\n"
-                    pass
-                else:
-                    pass
-                    # variable assignments
-                    # outputText += getAssignmentLinesVariable(val, varName) + "\n"
-                outputText += "\n"  # Add newline after assignment
-            # printf statements
             elif "printf" in line:
                 outputText_new, the_funcs_new = handlePrintf(line,the_funcs) 
                 outputText+= outputText_new + "\n"
