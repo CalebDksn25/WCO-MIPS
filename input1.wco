@@ -1,0 +1,7 @@
+li $t1, 50
+li $t2, 10
+BRAYDON 50
+ENZO $t3, $t1, $t2
+TAIKI $t3
+MAXX $t3
+LUKE
